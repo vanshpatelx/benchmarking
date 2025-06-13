@@ -87,3 +87,22 @@ docker run -d \
 
 # Show real-time container stats
 docker stats
+
+
+docker run -d \
+  --name pg-benchmark \
+  --network monitoring-net \
+  -p 5432:5432 \
+  -e POSTGRES_USER=youruser \
+  -e POSTGRES_PASSWORD=yourpassword \
+  -e POSTGRES_DB=yourdb \
+  -v pg_data:/var/lib/postgresql/data \
+  -v "$(pwd)/init.sql":/docker-entrypoint-initdb.d/init.sql \
+  postgres:15 \
+  -c max_connections=200 \
+  -c shared_buffers=256MB \
+  -c work_mem=16MB \
+  -c maintenance_work_mem=64MB \
+  -c effective_cache_size=512MB \
+  -c logging_collector=on \
+  -c log_destination=stderr
