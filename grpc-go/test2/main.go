@@ -83,7 +83,7 @@ func main() {
 	concurrency := 100
 	initialRequests := 200
 	increment := 100
-	maxRequests := 5000
+	maxRequests := 2500
 	minRequests := 200
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
@@ -213,7 +213,7 @@ func runGRPCLoadTest(client pb.AuthServiceClient, total, concurrency int) []resu
 			defer cancel()
 
 			// Combine prefix, goroutine index, and random number to avoid duplication
-			username := fmt.Sprintf("user_%d_%d_%d", uniquePrefix, i, time.Now().UnixNano())
+			username := fmt.Sprintf("user2_%d_%d_%d", uniquePrefix, i, time.Now().UnixNano())
 
 			start := time.Now()
 			_, err := client.Signup(ctx, &pb.SignupRequest{

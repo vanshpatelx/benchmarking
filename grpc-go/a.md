@@ -37,8 +37,8 @@ docker network create monitoring-net
 # Run your Go API container
 docker run -d \
   --name go-api \
-  --cpus="1.0" \
-  --memory="512m" \
+  --cpus="2.0" \
+  --memory="1GB" \
   --network monitoring-net \
   benchmarktest-go-api
 
@@ -47,10 +47,38 @@ docker build -t go-api-i ./go-api
 
 docker run -d \
   --name go-api \
-  --cpus="1.0" \
-  --memory="512m" \
+  --cpus="3.0" \
+  --memory="2GB" \
   --network monitoring-net \
   go-api-i   
+
+
+# Instance 1
+docker run -d \
+  --name go-api-1 \
+  --cpus="3.0" \
+  --memory="2GB" \
+  --network monitoring-net \
+  go-api-i
+
+# Instance 2
+docker run -d \
+  --name go-api-2 \
+  --cpus="3.0" \
+  --memory="2GB" \
+  --network monitoring-net \
+  go-api-i
+
+
+docker run -d \
+  -p 6060:6060 \
+  -p 8080:8080 \
+  -p 50051:50051 \
+  --cpus="3.0" \
+  --memory="2GB" \
+  --network monitoring-net \
+  --name go-api \
+  go-api-i
 
 
 
@@ -99,11 +127,11 @@ docker run -d \
   -v pg_data:/var/lib/postgresql/data \
   -v "$(pwd)/init.sql":/docker-entrypoint-initdb.d/init.sql \
   postgres:15 \
-  -c max_connections=200 \
-  -c shared_buffers=256MB \
-  -c work_mem=16MB \
-  -c maintenance_work_mem=64MB \
-  -c effective_cache_size=512MB \
+  -c max_connections=500 \
+  -c shared_buffers=512MB \
+  -c work_mem=32MB \
+  -c maintenance_work_mem=128MB \
+  -c effective_cache_size=1GB \
   -c logging_collector=on \
   -c log_destination=stderr
 
