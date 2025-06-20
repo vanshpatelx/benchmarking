@@ -83,7 +83,7 @@ func main() {
 	concurrency := 100
 	initialRequests := 200
 	increment := 100
-	maxRequests := 2500
+	maxRequests := 5000
 	minRequests := 200
 
 	conn, err := grpc.Dial(address, grpc.WithInsecure())

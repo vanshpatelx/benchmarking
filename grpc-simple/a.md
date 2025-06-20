@@ -106,8 +106,8 @@ docker run -d \
 # Run NGINX container
 docker run -d \
   --name nginx \
-  --cpus="2.0" \
-  --memory="512m" \
+  --cpus="1.0" \
+  --memory="1G" \
   --network monitoring-net \
   -p 8080:80 \
   -v "$(pwd)/nginx.conf:/etc/nginx/nginx.conf:ro" \
@@ -120,6 +120,8 @@ docker stats
 docker run -d \
   --name pg-benchmark \
   --network monitoring-net \
+  --cpus="2.0" \
+  --memory="2GB" \
   -p 5432:5432 \
   -e POSTGRES_USER=youruser \
   -e POSTGRES_PASSWORD=yourpassword \
@@ -127,7 +129,7 @@ docker run -d \
   -v pg_data:/var/lib/postgresql/data \
   -v "$(pwd)/init.sql":/docker-entrypoint-initdb.d/init.sql \
   postgres:15 \
-  -c max_connections=500 \
+  -c max_connections=1000 \
   -c shared_buffers=512MB \
   -c work_mem=32MB \
   -c maintenance_work_mem=128MB \
